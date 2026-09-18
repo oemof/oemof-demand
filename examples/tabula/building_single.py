@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 from oemof.demand.tabula import single_zone_building as szb
 
 # Add the area of the building parts.
-area = szb.Envelope(window=389, floor=598.34, roof=598.34, wall=1673.73)
+area = szb.EnvelopeParameter(window=389, floor=598.34, roof=598.34, wall=1673.73)
 
 # The floor area is reduced because less heat is lost through the ground.
 area.add_correction_factors({"floor": 0.5}, add_missing=True)
@@ -31,7 +31,7 @@ bt = szb.BuildingTable(
 
 # Calculation of the specific heat demand for a defined renovation condition,
 # a specific climate zone, and assumed heating behaviour.
-u_values = szb.Envelope(
+u_values = szb.EnvelopeParameter(
     window=1.3, floor=0.235162, roof=0.160550, wall=0.195542
 )
 

@@ -64,7 +64,7 @@ area_cols = {
     for c in buildings_tabula.columns
     if "A_Calc_" in c and c[-1] in ["1", "2", "3"]
 }
-areas = szb.Envelope.from_dataframe(
+areas = szb.EnvelopeParameter.from_dataframe(
     buildings_tabula[area_cols.keys()].rename(columns=area_cols)
 )
 
@@ -86,7 +86,7 @@ u_value_cols = {
     for c in buildings_tabula.columns
     if "U_Actual_" in c and c[-1] in ["1", "2", "3"]
 }
-u_values = szb.Envelope.from_dataframe(
+u_values = szb.EnvelopeParameter.from_dataframe(
     buildings_tabula[u_value_cols.keys()].rename(columns=u_value_cols)
 )
 

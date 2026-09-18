@@ -9,7 +9,7 @@ import pandas as pd
 from oemof.demand import config as cfg
 
 
-class Envelope:
+class EnvelopeParameter:
     def __init__(
         self,
         wall=None,
