@@ -167,9 +167,6 @@ class ElecSlp:
         left_cols = ["hour_of_day", "minute_of_hour", "weekday"]
         right_cols = ["hour", "minute", "weekday"]
         tmp_df = tmp_df.reset_index(drop=True)
-        import warnings
-
-        warnings.simplefilter("error")
 
         for p in self._seasons.keys():
             a = datetime.datetime(
