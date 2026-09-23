@@ -24,7 +24,9 @@ buildings = pd.read_csv(
 )
 
 # Add the area of the building parts for each building
-areas = szb.EnvelopeParameter.from_dataframe(building_geometry["area of element"])
+areas = szb.EnvelopeParameter.from_dataframe(
+    building_geometry["area of element"]
+)
 areas.add_correction_factors(
     {"Floor_1": 0.5, "Floor_2": 0.5, "Wall_2": 0.5}, add_missing=True
 )
@@ -45,7 +47,9 @@ bt = szb.BuildingTable(
 results = {}
 for state in [1, 2, 3]:
     building_state = buildings.loc[state]
-    u_values = szb.EnvelopeParameter.from_dataframe(buildings["u_values"].loc[state])
+    u_values = szb.EnvelopeParameter.from_dataframe(
+        buildings["u_values"].loc[state]
+    )
     results[state] = bt.specific_annual_heating_demand(
         u_value=u_values,
         thermal_bridges_factor=building_state[

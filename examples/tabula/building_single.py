@@ -16,7 +16,9 @@ from matplotlib import pyplot as plt
 from oemof.demand.tabula import single_zone_building as szb
 
 # Add the area of the building parts.
-area = szb.EnvelopeParameter(window=389, floor=598.34, roof=598.34, wall=1673.73)
+area = szb.EnvelopeParameter(
+    window=389, floor=598.34, roof=598.34, wall=1673.73
+)
 
 # The floor area is reduced because less heat is lost through the ground.
 area.add_correction_factors({"floor": 0.5}, add_missing=True)

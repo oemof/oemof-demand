@@ -1,12 +1,27 @@
 """
-https://www.energie-experten.org/bauen-und-sanieren/daemmung/waermedaemmung
-/transmissionswaermeverlust
+https://www.energie-experten.org/bauen-und-sanieren/daemmung/waermedaemmung/transmissionswaermeverlust
 
 """
 
 import pandas as pd
 
 from oemof.demand import config as cfg
+
+
+def check_type(data):
+    if isinstance(data, pd.DataFrame):
+        return data
+    try:
+        data = float(data)
+    except TypeError:
+        pass
+    if isinstance(data, float):
+        return data
+    else:
+        raise TypeError(
+            f"Type {type(data)} is not supported. Use a scalr Value or a "
+            f"pandas.DataFrame instead."
+        )
 
 
 class EnvelopeParameter:
@@ -28,7 +43,7 @@ class EnvelopeParameter:
         if correction_factors is not None:
             self.add_correction_factors(correction_factors)
         else:
-            self.correction_factors = None
+            self.add_correction_factors({}, add_missing=True)
 
     @classmethod
     def from_dataframe(cls, df):
@@ -51,8 +66,14 @@ class EnvelopeParameter:
         pandas.DataFrame
         """
         if self._df is None:
-            all_df = {k: getattr(self, k) for k in self.parts}
-            if all([isinstance(v, (float, int)) for v in all_df.values()]):
+            all_df = {
+                k: getattr(self, k)
+                for k in self.parts
+                if getattr(self, k) is not None
+            }
+            if len(all_df) == 0:
+                return self._df
+            elif all([isinstance(v, (float, int)) for v in all_df.values()]):
                 df = pd.DataFrame(all_df, index=[0])
                 df.columns = pd.MultiIndex.from_arrays(
                     [list(df.columns), list(df.columns)]
@@ -72,13 +93,19 @@ class EnvelopeParameter:
         pandas.DataFrame
         """
         if self._flat_df is None:
-            self._flat_df = self.df.droplevel(0, axis=1)
+            if self.df is not None:
+                self._flat_df = self.df.droplevel(0, axis=1)
+            else:
+                self._flat_df = None
         return self._flat_df
 
     def add_correction_factors(self, factors, add_missing=False):
         """ """
 
-        columns_flat = list(self.flat_df.columns)
+        if self.flat_df is None:
+            columns_flat = []
+        else:
+            columns_flat = list(self.flat_df.columns)
         for factor in factors.keys():
             if factor not in columns_flat:
                 msg = (
@@ -111,14 +138,38 @@ class BuildingTable:
 
         Examples
         --------
-        >>> env_area=pd.DataFrame({"door":2, "window":5, "roof": 20, "wall":4},
-        ...                       index=[0])
+        >>> env_area=EnvelopeParameter(floor=15, window=5, roof=20, wall=34)
         >>> bt = BuildingTable(
         ...    area= env_area,
-        ...    conditioned_floor_area=pd.Series(data=[230], index=[0]),
-        ...    floor_height=pd.Series(data=[2.5], index=[0]))
-        >>> bt.floor_height[0]
+        ...    conditioned_floor_area=230,
+        ...    floor_height=2.5,
+        ...    window_orientation_factor=0.7)
+        >>> bt.floor_height
         2.5
+        >>> env_u_values=EnvelopeParameter(
+        ...     wall=0.5, roof=0.5, window=0.3, floor=0.3)
+        >>> round(float(bt.annual_heating_demand(
+        ...     u_value=env_u_values,
+        ...     heating_degree_days=3497,
+        ...     heating_days=222,
+        ...     thermal_bridges_factor=0.1,
+        ...     ventilation_rate=0.6,
+        ...     irradiation_heating_season=403,
+        ...     gain_utilisation_factor=0.958363,
+        ...     transmittance_windows=0.6
+        ... ).sum()),3)
+        9405.615
+        >>> round(float(bt.specific_annual_heating_demand(
+        ...     u_value=env_u_values,
+        ...     heating_degree_days=3497,
+        ...     heating_days=222,
+        ...     thermal_bridges_factor=0.1,
+        ...     ventilation_rate=0.6,
+        ...     irradiation_heating_season=403,
+        ...     gain_utilisation_factor=0.958363,
+        ...     transmittance_windows=0.6
+        ... ).sum()),3)
+        40.894
         """
         self.area = area
         self.conditioned_floor_area = conditioned_floor_area
@@ -261,7 +312,7 @@ class BuildingTable:
         heating_degree_days,
         heating_days,
         irradiation_heating_season,
-        adjustment_factor,
+        adjustment_factor=1,
     ):
         """
 
@@ -330,11 +381,12 @@ class BuildingTable:
         >>> bt = BuildingTable(
         ...    area= env_area,
         ...    conditioned_floor_area=pd.Series(data=[230], index=[0]),
-        ...    floor_height=pd.Series(data=[2.5], index=[0]))
+        ...    floor_height=pd.Series(data=[2.5], index=[0]),
+        ...    window_orientation_factor=pd.Series(data=[0.7], index=[0]))
         >>> sg = bt.internal_heat_sources(222)
-        >>> round(sg[0], 2)
+        >>> float(round(sg[0], 2))
         3455.74
-        >>> round((sg/bt.conditioned_floor_area)[0], 2)
+        >>> float(round((sg/bt.conditioned_floor_area)[0], 2))
         15.02
 
         """
@@ -388,16 +440,16 @@ class BuildingTable:
 
         Examples
         --------
-        >>> env_area=pd.DataFrame({"door":2, "window":5, "roof": 20, "wall":4},
-        ...                       index=[0])
+        >>> env_area=EnvelopeParameter(floor=2, window=5, roof=20, wall=4)
         >>> bt = BuildingTable(
         ...    area= env_area,
         ...    conditioned_floor_area=pd.Series(data=[230], index=[0]),
-        ...    floor_height=pd.Series(data=[2.5], index=[0]))
+        ...    floor_height=pd.Series(data=[2.5], index=[0]),
+        ...    window_orientation_factor=pd.Series(data=[0.7], index=[0]))
         >>> sg = bt.solar_gain(400, 0.6, 0.94)
-        >>> round(sg[0], 2)
+        >>> float(round(sg[0], 2))
         298.47
-        >>> round((sg/bt.conditioned_floor_area)[0], 2)
+        >>> float(round((sg/bt.conditioned_floor_area)[0], 2))
         1.3
         """
         squeeze_to_series(
