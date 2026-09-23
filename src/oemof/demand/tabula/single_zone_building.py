@@ -11,6 +11,8 @@ from oemof.demand import config as cfg
 def check_type(data):
     if isinstance(data, pd.DataFrame):
         return data
+    if data is None:
+        return data
     try:
         data = float(data)
     except TypeError:
@@ -33,10 +35,10 @@ class EnvelopeParameter:
         floor=None,
         correction_factors=None,
     ):
-        self.wall = wall
-        self.window = window
-        self.roof = roof
-        self.floor = floor
+        self.wall = check_type(wall)
+        self.window = check_type(window)
+        self.roof = check_type(roof)
+        self.floor = check_type(floor)
         self.parts = ["wall", "window", "roof", "floor"]
         self._df = None
         self._flat_df = None
@@ -175,16 +177,6 @@ class BuildingTable:
         self.conditioned_floor_area = conditioned_floor_area
         self.floor_height = floor_height
         self.window_orientation_factor = window_orientation_factor
-
-    def _process_correction_factors(self, correction_factors):
-        df = pd.DataFrame(
-            data=1, index=self.area.index, columns=self.area.columns
-        )
-        if correction_factors is not None:
-            for building_part, value in correction_factors.items():
-                df[building_part] = value
-
-        return df
 
     def heat_losses_ventilation_building(
         self,
