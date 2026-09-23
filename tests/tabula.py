@@ -47,9 +47,7 @@ class TestCheckType:
 
 class TestEnvelopeParameter:
     def setup_method(self):
-        self.env = szb.EnvelopeParameter(
-            wall=34, window=5, roof=20, floor=15
-        )
+        self.env = szb.EnvelopeParameter(wall=34, window=5, roof=20, floor=15)
 
     def test_parts(self):
         assert self.env.parts == ["wall", "window", "roof", "floor"]
@@ -189,9 +187,7 @@ class TestBuildingTable:
         assert result.name == "solar gain"
 
     def test_solar_gain_with_dataframe_area(self):
-        env = szb.EnvelopeParameter(
-            floor=2, window=5, roof=20, wall=4
-        )
+        env = szb.EnvelopeParameter(floor=2, window=5, roof=20, wall=4)
         bt = szb.BuildingTable(
             area=env,
             conditioned_floor_area=pd.Series(data=[230], index=[0]),
