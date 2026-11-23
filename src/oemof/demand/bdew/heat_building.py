@@ -236,7 +236,7 @@ class HeatBuilding:
         sf_mat.index = pd.to_datetime(sf_mat["date"]) + pd.to_timedelta(
             sf_mat["hour_of_day"] - 1, unit="h"
         )
-        sf_mat.sort_index(inplace=True)
+        sf_mat = sf_mat.sort_index()
 
         # drop unnecessary columns
         drop_cols = (
@@ -334,7 +334,7 @@ class HeatBuilding:
         merged_df.index = pd.to_datetime(merged_df["date"]) + pd.to_timedelta(
             merged_df["hour"] - 1, unit="h"
         )
-        merged_df.sort_index(inplace=True)
+        merged_df = merged_df.sort_index()
 
         return np.array(list(map(float, merged_df["wochentagsfaktor"])))
 

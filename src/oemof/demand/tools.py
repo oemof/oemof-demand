@@ -34,7 +34,7 @@ def add_weekdays2df(
     Using Pandas > 0.16
 
     """
-    time_df["weekday"] = time_df.index.weekday + 1
+    time_df["weekday"] = time_df.index.day_of_week + 1
     time_df["date"] = time_df.index.date
 
     set_holidays_in_df(time_df, holidays)

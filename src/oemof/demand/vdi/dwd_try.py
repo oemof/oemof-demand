@@ -120,12 +120,11 @@ def read_dwd_weather_file(weather_file_path):
     )
 
     # Rename the columns
-    weather_data.rename(
+    weather_data = weather_data.rename(
         columns={
             "t": "TAMB",
             "N": "CCOVER",
         },
-        inplace=True,
     )
 
     return weather_data

@@ -21,6 +21,8 @@ Other changes
 * Warn when a profile is created without ``holidays``, because public
   holidays are then treated as the weekday they fall on. Pass
   ``holidays=[]`` to model a period without public holidays explicitly.
+* Stop using pandas API deprecated in pandas 3.1 (``DatetimeIndex.weekday``
+  and ``inplace`` in ``drop``, ``rename``, ``set_index`` and ``sort_index``).
 
 
 v0.2.2 (2025-04-09)

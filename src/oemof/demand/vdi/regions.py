@@ -297,9 +297,7 @@ class Region:
         days["day_types"] = (
             days["season"] + days["day_of_week"] + days["cloud_category"]
         )
-        days.drop(
-            ["season", "day_of_week", "cloud_category"], axis=1, inplace=True
-        )
+        days = days.drop(columns=["season", "day_of_week", "cloud_category"])
         return days
 
     def _load_profile_factors(self, tl):
@@ -617,9 +615,7 @@ class Region:
                 )
                 .sort_index()
             )
-            df_typ.drop(
-                ["day_types", "minute_of_day", "ht"], axis=1, inplace=True
-            )
+            df_typ = df_typ.drop(columns=["day_types", "minute_of_day", "ht"])
 
             load_profile_df = self._load_profiles[tl].rename(
                 columns={
