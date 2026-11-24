@@ -5,7 +5,7 @@
     <title>Coverage for src/oemof/demand/bdew/heat_building.py: 87.76%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_c827f16f.png">
     <link rel="stylesheet" href="style_cb_4667309f.css" type="text/css">
-    <script src="coverage_html_cb_15cffcd0.js" defer></script>
+    <script src="coverage_html_cb_54cfdca1.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_0f1d5ee384a10141_config_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.16.2">coverage.py v7.16.2</a>,
-            created at 2026-10-22 07:09 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
+            created at 2026-11-24 08:04 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -320,7 +320,7 @@
     <p class="run"><span class="n"><a id="t236" href="#t236">236</a></span><span class="t">        <span class="nam">sf_mat</span><span class="op">.</span><span class="nam">index</span> <span class="op">=</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">to_datetime</span><span class="op">(</span><span class="nam">sf_mat</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">to_timedelta</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t237" href="#t237">237</a></span><span class="t">            <span class="nam">sf_mat</span><span class="op">[</span><span class="str">&quot;hour_of_day&quot;</span><span class="op">]</span> <span class="op">-</span> <span class="num">1</span><span class="op">,</span> <span class="nam">unit</span><span class="op">=</span><span class="str">&quot;h&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t238" href="#t238">238</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t239" href="#t239">239</a></span><span class="t">        <span class="nam">sf_mat</span><span class="op">.</span><span class="nam">sort_index</span><span class="op">(</span><span class="nam">inplace</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t239" href="#t239">239</a></span><span class="t">        <span class="nam">sf_mat</span> <span class="op">=</span> <span class="nam">sf_mat</span><span class="op">.</span><span class="nam">sort_index</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t240" href="#t240">240</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t241" href="#t241">241</a></span><span class="t">        <span class="com"># drop unnecessary columns</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t242" href="#t242">242</a></span><span class="t">        <span class="nam">drop_cols</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
@@ -418,7 +418,7 @@
     <p class="run"><span class="n"><a id="t334" href="#t334">334</a></span><span class="t">        <span class="nam">merged_df</span><span class="op">.</span><span class="nam">index</span> <span class="op">=</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">to_datetime</span><span class="op">(</span><span class="nam">merged_df</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">to_timedelta</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t335" href="#t335">335</a></span><span class="t">            <span class="nam">merged_df</span><span class="op">[</span><span class="str">&quot;hour&quot;</span><span class="op">]</span> <span class="op">-</span> <span class="num">1</span><span class="op">,</span> <span class="nam">unit</span><span class="op">=</span><span class="str">&quot;h&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t336" href="#t336">336</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t337" href="#t337">337</a></span><span class="t">        <span class="nam">merged_df</span><span class="op">.</span><span class="nam">sort_index</span><span class="op">(</span><span class="nam">inplace</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t337" href="#t337">337</a></span><span class="t">        <span class="nam">merged_df</span> <span class="op">=</span> <span class="nam">merged_df</span><span class="op">.</span><span class="nam">sort_index</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t338" href="#t338">338</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t339" href="#t339">339</a></span><span class="t">        <span class="key">return</span> <span class="nam">np</span><span class="op">.</span><span class="nam">array</span><span class="op">(</span><span class="nam">list</span><span class="op">(</span><span class="nam">map</span><span class="op">(</span><span class="nam">float</span><span class="op">,</span> <span class="nam">merged_df</span><span class="op">[</span><span class="str">&quot;wochentagsfaktor&quot;</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t340" href="#t340">340</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -451,8 +451,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_0f1d5ee384a10141_config_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.16.2">coverage.py v7.16.2</a>,
-            created at 2026-10-22 07:09 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
+            created at 2026-11-24 08:04 +0000
         </p>
     </div>
 </footer>
