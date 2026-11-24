@@ -33,7 +33,9 @@ class HeatBuilding:
     datapath : string
         path to the bdew basic data files (csv)
     temperature : pandas.Series
-        Series containing hourly temperature data
+        Series containing hourly temperature data (in °C).
+        To be able to consider thermal intertia of the buildings from the
+        beginning, the series should start three days before df_index.
     annual_heat_demand : float
         annual heat demand of building in kWh
     building_class: int
