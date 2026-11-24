@@ -143,7 +143,7 @@ class ElecSlp:
         index = pd.date_range(
             datetime.datetime(2007, 1, 1, 0), periods=2016, freq="15Min"
         )
-        tmp_df.set_index(index, inplace=True)
+        tmp_df = tmp_df.set_index(index)
 
         # Create empty DataFrame to take the results.
         new_df = pd.DataFrame(data=0, index=dt_index, columns=slp_types)
@@ -188,12 +188,10 @@ class ElecSlp:
                 + pd.to_timedelta(merged_df["hour"], unit="h")
                 + pd.to_timedelta(merged_df["minute"], unit="m")
             )
-            merged_df.sort_index(inplace=True)
+            merged_df = merged_df.sort_index()
             new_df.update(merged_df[profile_columns])
 
-        new_df.drop(
-            ["date", "minute", "hour", "weekday"], axis=1, inplace=True
-        )
+        new_df = new_df.drop(columns=["date", "minute", "hour", "weekday"])
         return new_df.div(new_df.sum(axis=0), axis=1)
 
     def create_dynamic_h0_profile(self):

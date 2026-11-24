@@ -86,7 +86,7 @@ class BDEW25Profile(pd.Series):
             on=["month", "weekday", "hour", "minute"],
             how="inner",
         )
-        new_df.set_index(timeindex15m, inplace=True)
+        new_df = new_df.set_index(timeindex15m)
 
         values = new_df.value
         if original_timedelta > pd.Timedelta("00:15:00"):
@@ -110,7 +110,7 @@ class BDEW25Profile(pd.Series):
             header=[0, 1],
         )
 
-        profile_data.rename(
+        profile_data = profile_data.rename(
             columns={
                 "Januar": 1,
                 "Februar": 2,
@@ -125,7 +125,6 @@ class BDEW25Profile(pd.Series):
                 "November": 11,
                 "Dezember": 12,
             },
-            inplace=True,
         )
         del profile_data[("Unnamed: 0_level_0", "[kWh]")]
 
