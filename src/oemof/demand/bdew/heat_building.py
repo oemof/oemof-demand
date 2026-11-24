@@ -25,8 +25,8 @@ class HeatBuilding:
     """
     Parameters
     ----------
-    year : int
-        year for which the profile is created
+    df_index : pd.DatetimeIndex
+        time index (time-zone naive) along which the profile is created
 
     Attributes
     ----------
@@ -50,6 +50,11 @@ class HeatBuilding:
         decider whether warm water load is included in the heat load profile
     ww_only : boolean
         if true, only warm water load is included in the heat load profile
+
+    Notes
+    -----
+    BDEW defines profiles based on local time. We reflect that that by using
+    time-zone naive time indexes.
     """
 
     def __init__(self, df_index, **kwargs):
