@@ -12,6 +12,8 @@ Bug fixes
 *   Implement default temperature limits for VDI 4655 calculation to make
     ``summer_temperature_limit`` and ``winter_temperature_limit`` optional
 *   Fix leap year handling in VDI 4655 profiles
+*   Align coarse BDEW 2025 profiles to the supplied time index and average
+    all quarter-hour values in the final interval.
 
 Other changes
 #############

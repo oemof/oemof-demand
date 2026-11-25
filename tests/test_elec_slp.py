@@ -214,3 +214,35 @@ def test_slp25():
         # We allow 2.5 % tollerenace (without holidays), two years
         slp_profile = slp_type(index_2years)
         assert slp_profile.sum() / 4 == pytest.approx(2e6, rel=0.025)
+
+
+@pytest.mark.parametrize("start", ["2010-01-01 18:00", "2010-01-01 18:15"])
+def test_slp25_hourly_profiles_average_each_full_interval(start):
+    hourly_index = pd.date_range(start, periods=2, freq="h")
+    quarter_hour_index = pd.date_range(start, periods=8, freq="15min")
+    quarters = bdew.H25(quarter_hour_index, holidays=[])
+
+    hourly = bdew.H25(hourly_index, holidays=[])
+
+    pd.testing.assert_index_equal(hourly.index, hourly_index)
+    assert hourly.tolist() == pytest.approx(
+        [quarters.iloc[:4].mean(), quarters.iloc[4:].mean()]
+    )
+
+
+@pytest.mark.parametrize("start", ["2024-03-30 00:15", "2024-10-26 00:15"])
+def test_slp25_daily_profiles_follow_timezone_aware_interval_edges(start):
+    edges = pd.date_range(start, periods=3, freq="D", tz="Europe/Berlin")
+    quarter_hour_index = pd.date_range(
+        edges[0], edges[-1], freq="15min", inclusive="left"
+    )
+    quarters = bdew.G25(quarter_hour_index, holidays=[])
+
+    daily = bdew.G25(edges[:-1], holidays=[])
+
+    expected = [
+        quarters[(quarters.index >= left) & (quarters.index < right)].mean()
+        for left, right in zip(edges[:-1], edges[1:])
+    ]
+    pd.testing.assert_index_equal(daily.index, edges[:-1])
+    assert daily.tolist() == pytest.approx(expected)
