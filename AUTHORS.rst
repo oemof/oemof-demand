@@ -13,6 +13,7 @@ Authors
 * Guido Plessmann
 * Hendrik Huyskens
 * Jann Launer
+* maoji-y
 * Patrik Schönfeldt
 * Pyosch
 * Steffen Wehkamp

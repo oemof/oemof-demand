@@ -35,12 +35,11 @@ class BDEW25Profile(pd.Series):
     ----------
     timeindex : pd.DatetimeIndex
         Time index to produce the SLP for. Only constant step-size is
-        supported, i.e. timeindex.freq needs to be defined. If time
-        steps of 15 minutes are used, that are aligned with the full
-        hour, the original SLP is reproduced. Lower resolutions will
-        be downsampled, higher resolutions wil be padded. (Pading is
-        the correct handling because the SLP defines constant values
-        for 15 minutes.)
+        supported, i.e. timeindex.freq needs to be defined. For an index
+        starting on a quarter hour, a 15-minute step reproduces the original
+        SLP. Coarser steps average the quarter-hour values with timestamps
+        in each interval. Finer steps pad those values because the SLP is
+        constant within each quarter hour.
 
     Optional Parameters
     -------------------
@@ -55,13 +54,20 @@ class BDEW25Profile(pd.Series):
         holidays: dict | list | None = None,
     ):
         original_timedelta = pd.Timedelta(timeindex.freq)
-        if original_timedelta == pd.Timedelta("00:15:00"):
+        profile_timedelta = pd.Timedelta(minutes=15)
+        if original_timedelta == profile_timedelta:
             timeindex15m = timeindex
         else:
+            end = timeindex[-1]
+            inclusive = "both"
+            if original_timedelta > profile_timedelta:
+                end = pd.date_range(end, periods=2, freq=timeindex.freq)[1]
+                inclusive = "left"
             timeindex15m = pd.date_range(
                 start=timeindex[0],
-                end=timeindex[-1],
-                freq="15min",
+                end=end,
+                freq=profile_timedelta,
+                inclusive=inclusive,
             )
         new_df = pd.DataFrame(
             data={
@@ -89,9 +95,12 @@ class BDEW25Profile(pd.Series):
         new_df = new_df.set_index(timeindex15m)
 
         values = new_df.value
-        if original_timedelta > pd.Timedelta("00:15:00"):
-            values = values.resample(original_timedelta).mean()
-        elif original_timedelta < pd.Timedelta("00:15:00"):
+        if original_timedelta > profile_timedelta:
+            interval_positions = timeindex.get_indexer(
+                timeindex15m, method="pad"
+            )
+            values = values.groupby(timeindex[interval_positions]).mean()
+        elif original_timedelta < profile_timedelta:
             values = values.reindex(timeindex, method="ffill")
 
         super().__init__(data=values, index=timeindex)
