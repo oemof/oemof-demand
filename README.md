@@ -8,7 +8,7 @@
 | src/oemof/demand/bdew/\_\_init\_\_.py    |        8 |        0 |        0 |        0 |    100.00% |           |
 | src/oemof/demand/bdew/\_profiles25.py    |       77 |        0 |        8 |        0 |    100.00% |           |
 | src/oemof/demand/bdew/elec\_slp.py       |       72 |        0 |        8 |        0 |    100.00% |           |
-| src/oemof/demand/bdew/heat\_building.py  |       86 |        6 |       12 |        4 |     87.76% |73, 125-128, 292, 303 |
+| src/oemof/demand/bdew/heat\_building.py  |       86 |        6 |       12 |        4 |     87.76% |80, 132-135, 299, 310 |
 | src/oemof/demand/config.py               |       74 |        0 |       20 |        0 |    100.00% |           |
 | src/oemof/demand/particular\_profiles.py |       39 |        1 |        8 |        1 |     95.74% |       134 |
 | src/oemof/demand/tools.py                |       18 |        0 |        8 |        0 |    100.00% |           |
