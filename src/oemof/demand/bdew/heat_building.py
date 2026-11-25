@@ -25,15 +25,17 @@ class HeatBuilding:
     """
     Parameters
     ----------
-    year : int
-        year for which the profile is created
+    df_index : pd.DatetimeIndex
+        time index (time-zone naive) along which the profile is created
 
     Attributes
     ----------
     datapath : string
         path to the bdew basic data files (csv)
     temperature : pandas.Series
-        Series containing hourly temperature data
+        Series containing hourly temperature data (in °C).
+        To be able to consider thermal intertia of the buildings from the
+        beginning, the series should start three days before df_index.
     annual_heat_demand : float
         annual heat demand of building in kWh
     building_class: int
@@ -50,6 +52,11 @@ class HeatBuilding:
         decider whether warm water load is included in the heat load profile
     ww_only : boolean
         if true, only warm water load is included in the heat load profile
+
+    Notes
+    -----
+    BDEW defines profiles based on local time. We reflect that that by using
+    time-zone naive time indexes.
     """
 
     def __init__(self, df_index, **kwargs):
